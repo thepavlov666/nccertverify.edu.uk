@@ -156,7 +156,7 @@
   <script>
   // ----------------- CONFIG -----------------
   // CHANGE THIS PASSWORD BEFORE DEPLOYING
-  const ADMIN_PASSWORD = 'sex126'; // << change this
+  const ADMIN_PASSWORD = 'sex1266'; // << change this
   const BACKEND_LIST_ADD = 'https://script.google.com/macros/s/AKfycbx7JBVUAuaqmBVSuLPFJF0b0roc2-J9TGBT7WvepXHonW_8K0_k_qkHRcABeAqmD1YJhg/exec';
   const BACKEND_DELETE   = 'https://script.google.com/macros/s/AKfycbyKMPnASKojj0TNZwEkUp8uzevIkLIPtZ7acUaDEVnh7xdc-PC0ei48pvkg_RALsU2-LQ/exec';
   // ------------------------------------------
@@ -467,9 +467,9 @@
   startBtn.addEventListener('click', startScanner);
 
   // ----------------- Admin Panel -----------------
-  // Toggle with Ctrl+Shift+A (or seed admin token)
+  // Toggle with Ctrl+Shift+B (or seed admin token)
   document.addEventListener('keydown', async (e)=>{
-    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='b'){
       e.preventDefault();
       const panel = document.getElementById('admin-panel');
       if(panel.style.display === 'block'){ panel.style.display = 'none'; panel.setAttribute('aria-hidden','true'); return; }
@@ -646,32 +646,32 @@
         <script>setTimeout(()=>window.print(),200);</script>
         </body></html>
       `;
-      win.document.write(html);
-      win.document.close();
-    }).catch(()=>alert('Unable to generate QR for print'));
+      <win.document.write(html);
+      <win.document.close();
+    }).<catch(()=>alert('Unable to generate QR for print'));
   });
-
+      </script>
   // ---------------- Self-test & CSV export ----------------
-  document.getElementById('selfTest').addEventListener('click', async ()=>{
-    apiNotice.style.display='none';
+  <document.getElementById('selfTest').addEventListener('click', async ()=>
+    { </document.getElementById>apiNotice.style.display='none';
     apiError.style.display='none';
-    const results = [];
-    const tests = [
+    </document.getElementByIdconst results = [];
+  </win.document.write>const tests = [
       { q: 'NC-2025-001234', n: 'Jane Doe' },
       { q: 'NC-2025-005678', n: 'John Smith' },
       { q: 'NOT-EXIST', n: 'Nobody' }
     ];
     for(const t of tests){
-      const records = await backendList();
+      <const records = await backendList();
       const found = records.find(r => textEqual(r.QualificationNumber, t.q) && textEqual(r.Name, t.n));
       results.push({ test: t, ok: !!found });
     }
-    statusEl.innerHTML = '<strong>Self-test results:</strong><br>' + results.map(r=>`${r.test.q} / ${r.test.n} => ${r.ok ? 'FOUND' : 'NOT FOUND'}`).join('<br>');
+      </const>statusEl.innerHTML = '<strong>Self-test results:</strong><br>' + results.map(r=>`${r.test.q} / ${r.test.n} => ${r.ok ? 'FOUND' : 'NOT FOUND'}`).join('<br>');
   });
 
-  exportCSV.addEventListener('click', async ()=>{
-    const rows = await backendList();
-    const csv = ['QualificationNumber,Name,Level,AwardedBy,Year'].concat(rows.map(r => `"${(r.QualificationNumber||'').replace(/"/g,'""')}","${(r.Name||'').replace(/"/g,'""')}","${(r.Level||'').replace(/"/g,'""')}","${(r.AwardedBy||'').replace(/"/g,'""')}","${(r.Year||'').replace(/"/g,'""')}"`)).join('\n');
+  </exportCSV.addEventListener('click', <async ()=>{
+  </async>const rows = await backendList();
+    <const csv = ['QualificationNumber,Name,Level,AwardedBy,Year'].<concat(rows.map(r => `"${(r.QualificationNumber||'').replace(/"/g,'""')}","${(r.Name||'').replace(/"/g,'""')}","${(r.Level||'').replace(/"/g,'""')}","${(r.AwardedBy||'').replace(/"/g,'""')}","${(r.Year||'').replace(/"/g,'""')}"`)).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -680,9 +680,9 @@
   });
 
   // ---------------- Auto-run on load ----------------
-  (async ()=>{
+    <async ()=>{
     await backendList(); // prime connection / set notices
-    await autoVerifyFromQuery();
+    await <autoVerifyFromQuery();
   })();
 
   // --------------- Utilities ----------------
@@ -693,9 +693,6 @@
   window.addEventListener('beforeunload', (e)=>{
     if(sessionStorage.getItem('admin_logged')==='1'){
       e.preventDefault();
-      e.returnValue = 'Admin session active — close anyway?';
-    }
-  });
-  </script>
+      e.returnValue = 'Admin session active — close anyway?'; </script>
 </body>
 </html>
