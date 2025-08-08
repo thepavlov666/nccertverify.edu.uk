@@ -472,27 +472,7 @@
     verifyQualification();
   });
 
-  // QR Code generation for sample data
-  function generateQRCode(text, canvasId) {
-    const qr = qrcode(0, 'H');
-    qr.addData(text);
-    qr.make();
-    const qrImgTagString = qr.createImgTag(6);
-    const canvas = document.getElementById(canvasId);
-    // Clear canvas
-    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-    // Draw QR code on canvas
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-    };
-    img.src = qrImgTagString.match(/src="([^"]*)"/)[1];
-  }
-
-  generateQRCode('NC-2025-001234|Jane Doe', 'qrJane');
-  generateQRCode('NC-2025-005678|John Smith', 'qrJohn');
+  
 
   // QR Code scanning setup
   let html5QrCode = null;
