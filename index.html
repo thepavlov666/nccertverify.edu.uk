@@ -1,492 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Certificate Verification - Newcastle College Ltd</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Certificate Verification - Newcastle College Ltd</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/UK_flag_icon.svg/1024px-UK_flag_icon.svg.png" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    :root{--brand:#003366;--accent:#00509e}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f5f9ff;color:#012f6b;min-height:100vh;display:flex;flex-direction:column}
+    header{background:var(--brand);color:#fff;padding:1rem 1.5rem;text-align:center}
+    header img{height:44px;vertical-align:middle}
+    header h1{display:inline-block;margin:0 0 0 .75rem;font-size:1.25rem;font-weight:600;vertical-align:middle}
+    main{max-width:760px;margin:2rem auto;padding:2rem;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(2,17,55,.06)}
+    h2{color:var(--brand);margin-top:0}
+    p.intro{color:#234;opacity:.9}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:1rem 0}
+    button, input, select{font:inherit}
+    input[type=text]{width:100%;padding:.7rem;border:1.5px solid var(--brand);border-radius:8px}
+    button.primary{background:var(--brand);color:#fff;border:none;padding:.9rem 1rem;border-radius:8px;cursor:pointer;font-weight:700}
+    button.ghost{background:#fff;border:1px solid #d5dff7;color:var(--brand);padding:.6rem 1rem;border-radius:8px;cursor:pointer}
+    #reader{display:none;margin:1rem auto;max-width:420px;border:3px solid var(--accent);border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#000}
+    #result{margin-top:1rem}
+    .verified{background:#e6f9ec;border:1px solid #2e7d32;color:#1f5f2f;padding:1rem;border-radius:8px}
+    .not-found{background:#fff1f1;border:1px solid #c62828;color:#8a1e1e;padding:1rem;border-radius:8px}
+    .info-small{font-size:.85rem;color:#556;margin-top:1rem}
+    footer{background:#012f6b;color:#fff;padding:.9rem;text-align:center;margin-top:2rem}
+    #admin-panel{display:none;margin-top:1.5rem;padding:1rem;border-radius:10px;border:2px dashed #dbe8ff;background:#fff}
+    table{width:100%;border-collapse:collapse;margin-top:.75rem}
+    th,td{padding:.5rem;border:1px solid #e6eef8;text-align:left;font-size:.95rem}
+    th{background:#f3f8ff}
+    .small{font-size:.9rem}
+    .flex{display:flex;gap:.5rem;align-items:center}
+    .qr-preview img{max-width:160px;border-radius:8px;border:1px solid #e6eef8}
+    a.primary-download{display:inline-block;padding:.45rem .7rem;background:var(--brand);color:#fff;border-radius:6px;text-decoration:none}
+  </style>
 
-  /* Reset & base */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: #f5f9ff;
-    color: #012f6b;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-  a {
-    color: #00509e;
-    text-decoration: none;
-  }
-  a:hover, a:focus {
-    text-decoration: underline;
-  }
-
-  /* Header */
-  header {
-    background: #003366;
-    padding: 1rem 2rem;
-    color: white;
-    text-align: center;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
-  }
-  header img {
-    height: 50px;
-    vertical-align: middle;
-  }
-  header h1 {
-    display: inline-block;
-    margin-left: 15px;
-    font-weight: 600;
-    font-size: 1.8rem;
-    vertical-align: middle;
-    user-select: none;
-  }
-
-  /* Main content */
-  main {
-    flex: 1;
-    max-width: 600px;
-    margin: 2rem auto 3rem auto;
-    background: white;
-    padding: 2.5rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
-  }
-  main h2 {
-    color: #003366;
-    margin-bottom: 1rem;
-    font-weight: 700;
-  }
-  main p.intro {
-    margin-bottom: 1.8rem;
-    font-size: 1.05rem;
-    color: #012f6bdd;
-  }
-
-  /* Form */
-  form label {
-    display: block;
-    margin-top: 1.2rem;
-    font-weight: 600;
-  }
-  form input[type=text] {
-    width: 100%;
-    padding: 0.65rem;
-    margin-top: 0.3rem;
-    font-size: 1rem;
-    border: 2px solid #003366;
-    border-radius: 6px;
-    transition: border-color 0.3s ease;
-  }
-  form input[type=text]:focus:not(:disabled) {
-    border-color: #00509e;
-    outline: none;
-    box-shadow: 0 0 6px #00509eaa;
-  }
-  form input[type=text]:disabled {
-    background: #f0f4fb;
-    border-color: #99aabb;
-    color: #666;
-  }
-  form button[type=submit] {
-    margin-top: 2.5rem;
-    width: 100%;
-    background-color: #003366;
-    color: white;
-    border: none;
-    padding: 1rem;
-    font-size: 1.15rem;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  form button[type=submit]:hover:not(:disabled),
-  form button[type=submit]:focus:not(:disabled) {
-    background-color: #00509e;
-    outline: none;
-  }
-  form button[type=submit]:disabled {
-    background-color: #99aabb;
-    cursor: not-allowed;
-  }
-
-  /* Result box */
-  #result {
-    margin-top: 2rem;
-    padding: 1.8rem;
-    border-radius: 10px;
-    font-size: 1rem;
-    line-height: 1.6;
-    user-select: text;
-  }
-  .verified {
-    background-color: #e3f4e8;
-    border: 2px solid #2e7d32;
-    color: #2e7d32;
-  }
-  .not-found {
-    background-color: #fdecea;
-    border: 2px solid #c62828;
-    color: #c62828;
-  }
-
-  /* Loading */
-  #loadingMessage {
-    display: none;
-    text-align: center;
-    margin-top: 1.5rem;
-    font-weight: 700;
-    color: #555;
-    font-style: italic;
-  }
-
-  /* QR Scanner section */
-  #qrScannerSection {
-    margin-top: 3.5rem;
-    text-align: center;
-  }
-  #qrScannerSection button#startScanBtn {
-    background-color: #00509e;
-    border: none;
-    padding: 0.85rem 1.8rem;
-    font-weight: 600;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  #qrScannerSection button#startScanBtn:hover,
-  #qrScannerSection button#startScanBtn:focus {
-    background-color: #003366;
-    outline: none;
-  }
-
-  #reader {
-    display: none;
-    position: relative;
-    margin: 1.5rem auto 0 auto;
-    max-width: 400px;
-    aspect-ratio: 1 / 1;
-    border: 3px solid #00509e;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgb(0 80 158 / 0.3);
-    background: black;
-  }
-  #reader video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-  }
-  #scannerOverlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-  }
-  #scannerOverlay .laser {
-    position: absolute;
-    top: 50%; left: 0; width: 100%; height: 3px;
-    background: rgba(0,80,158,0.8);
-    animation: laserAnim 2s linear infinite;
-  }
-  #stopScanBtn {
-    position: absolute;
-    top: 10px; right: 10px;
-    background: #c62828;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(198, 40, 40, 0.8);
-    transition: background-color 0.3s ease;
-  }
-  #stopScanBtn:hover,
-  #stopScanBtn:focus {
-    background: #8b1a1a;
-    outline: none;
-  }
-
-  #scanStatus {
-    margin-top: 0.6rem;
-    font-weight: 600;
-    color: #00509e;
-    min-height: 1.3em;
-  }
-
-  @keyframes laserAnim {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  /* QR Codes container */
-  #qrCodeContainer {
-    margin-top: 4rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #qrCodeContainer h3 {
-    font-weight: 700;
-    color: #003366;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  #qrCodeContainer > div {
-    margin-bottom: 25px;
-    text-align: center;
-    color: #003366dd;
-    font-weight: 600;
-  }
-  #qrCodeContainer canvas {
-    margin-top: 8px;
-    border: 2px solid #00509e;
-    border-radius: 8px;
-  }
-
-  /* Footer */
-  footer {
-    background: #012f6b;
-    padding: 1.4rem 2rem;
-    color: white;
-    text-align: center;
-    font-size: 0.9rem;
-    user-select: none;
-  }
-  footer .sponsors {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 2.4rem;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  footer .sponsors img {
-    height: 40px;
-    filter: brightness(0) invert(1);
-  }
-  footer a {
-    color: #85c1e9;
-  }
-  footer a:hover,
-  footer a:focus {
-    text-decoration: underline;
-  }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    main {
-      margin: 1.5rem 1rem 2rem 1rem;
-      padding: 2rem 1.5rem;
-    }
-    #qrCodeContainer {
-      padding: 0 1rem;
-    }
-  }
-</style>
-
+  <!-- Libraries -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 <body>
+  <header>
+    <img src="https://www.newcastlecollege.ac.uk/wp-content/themes/ncl/dist/images/logo.svg" alt="Newcastle College Logo" />
+    <h1>Certificate Verification</h1>
+  </header>
 
-<header role="banner" aria-label="Newcastle College Certificate Verification">
-  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/66/Newcastle_College_logo.svg/320px-Newcastle_College_logo.svg.png" alt="Newcastle College Logo" />
-  <h1>Newcastle College Ltd - Certificate Verification</h1>
-</header>
+  <main>
+    <h2>Verify Your Qualification</h2>
+    <p class="intro">Scan a certificate QR or enter the Qualification Number and Candidate Name to verify a record issued by Newcastle College Ltd.</p>
 
-<main role="main">
-  <h2>Verify Your Certificate</h2>
-  <p class="intro">
-    Enter your qualification number and full name below to verify your certificate issued by Newcastle College Ltd.
-    This service is endorsed by <a href="https://www.ukrlp.co.uk/" target="_blank" rel="noopener noreferrer">UK Register of Learning Providers (UKRLP)</a> and regulated by <a href="https://www.gov.uk/government/organisations/ofqual" target="_blank" rel="noopener noreferrer">OFQUAL</a>.
-  </p>
-
-  <form id="verifyForm" onsubmit="event.preventDefault(); verifyQualification();" aria-label="Certificate verification form" autocomplete="off" novalidate>
-    <label for="qualificationNumber">Qualification Number (e.g. NC-2025-001234)</label>
-    <input type="text" id="qualificationNumber" name="qualificationNumber" placeholder="Enter your qualification number" required aria-required="true" autocomplete="off" />
-
-    <label for="name">Full Name (as on certificate)</label>
-    <input type="text" id="name" name="name" placeholder="Enter your full name" required aria-required="true" autocomplete="off" />
-
-    <button type="submit" id="verifyBtn">Verify Certificate</button>
-  </form>
-
-  <div id="loadingMessage" role="status" aria-live="polite">Loading...</div>
-  <div id="result" role="region" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- QR Code Scanner -->
-  <section id="qrScannerSection" aria-label="QR code scanning section">
-    <button id="startScanBtn" onclick="startScanner()" aria-controls="reader" aria-expanded="false" aria-haspopup="dialog">Scan QR Code</button>
-    <div id="reader" aria-live="assertive" aria-atomic="true" aria-label="Camera view for scanning QR codes" role="region">
-      <div id="scannerOverlay" class="scannerOverlay">
-        <div class="laser"></div>
-      </div>
-      <button id="stopScanBtn" onclick="stopScanner()" aria-label="Stop scanning and close camera view">✕ Close</button>
+    <div class="controls">
+      <button id="startScanBtn" class="primary">📷 Scan QR Code</button>
+      <button id="stopScanBtn" class="ghost" style="display:none">✕ Stop Scanner</button>
     </div>
-    <div id="scanStatus" aria-live="polite" aria-atomic="true"></div>
-  </section>
-</main>
 
-<footer role="contentinfo">
-  <p>© 2025 Newcastle College Ltd. All rights reserved.</p>
-  <p>Newcastle College is registered with <a href="https://www.ukrlp.co.uk/" target="_blank" rel="noopener noreferrer">UKRLP</a> and regulated by <a href="https://www.gov.uk/government/organisations/ofqual" target="_blank" rel="noopener noreferrer">OFQUAL</a>.</p>
-  <div class="sponsors" aria-label="Sponsors and partners logos">
-    <img src="https://upload.wikimedia.org/wikipedia/en/0/02/UK_Government_Royal_Crest.svg" alt="UK Government Logo" />
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Ofqual_logo.svg/256px-Ofqual_logo.svg.png" alt="OFQUAL Logo" />
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/UKRLPLogo.svg/256px-UKRLPLogo.svg.png" alt="UKRLP Logo" />
-  </div>
-</footer>
+    <div id="reader" aria-hidden="true"></div>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script>
-  https://script.google.com/macros/s/AKfycbyAoArqTYgEXjcJshYyqgRL8HujDbOvHt44I7Y-nNay/dev [
-    { qualificationNumber: "NC-2025-001234", name: "Jane Doe" },
-    { qualificationNumber: "NC-2025-005678", name: "John Smith" }
-  ];
+    <form id="verifyForm" autocomplete="off">
+      <label for="qualificationNumber" class="small">Qualification Number</label>
+      <input type="text" id="qualificationNumber" placeholder="e.g. UKQ-001-A" />
 
-  const qualificationInput = document.getElementById('qualificationNumber');
-  const nameInput = document.getElementById('name');
-  const resultDiv = document.getElementById('result');
-  const loadingMessage = document.getElementById('loadingMessage');
-  const verifyBtn = document.getElementById('verifyBtn');
-  const startScanBtn = document.getElementById('startScanBtn');
-  const scanStatus = document.getElementById('scanStatus');
+      <label for="name" class="small" style="margin-top:.5rem">Candidate Name</label>
+      <input type="text" id="name" placeholder="e.g. Benjamin Wayne" />
 
-  loadingMessage.style.display = 'none';
+      <button type="submit" class="primary" style="margin-top:1rem">Verify Certificate</button>
+    </form>
 
-  function verifyQualification() {
-    const qualificationNumber = qualificationInput.value.trim();
-    const name = nameInput.value.trim();
+    <div id="loadingMessage" style="display:none;margin-top:.75rem">Checking...</div>
+    <div id="result" aria-live="polite"></div>
 
-    // Clear previous results
-    resultDiv.textContent = '';
-    resultDiv.className = '';
-    loadingMessage.style.display = 'block';
-    loadingMessage.textContent = 'Verifying certificate...';
-    verifyBtn.disabled = true;
-    startScanBtn.disabled = true;
+    <div class="info-small">Provider: Newcastle College Ltd | UKPRN: 10093850. Listed on UKRLP. Regulated by OFQUAL.</div>
 
-    // Simulate API delay
-    setTimeout(() => {
-      loadingMessage.style.display = 'none';
-      verifyBtn.disabled = false;
-      startScanBtn.disabled = false;
+    <div id="admin-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:.25rem 0">🔒 Admin Panel</h3>
+        <div class="flex">
+          <button id="refreshListBtn" class="ghost">🔄 Refresh</button>
+        </div>
+      </div>
 
-      // Check in fake DB (replace with real API call)
-      const found = fakeDatabase.find(
-        record =>
-          record.qualificationNumber.toLowerCase() === qualificationNumber.toLowerCase() &&
-          record.name.toLowerCase() === name.toLowerCase()
-      );
+      <div style="margin-top:.5rem;overflow:auto;max-height:300px">
+        <table id="certTable"><thead><tr><th>QualificationNumber</th><th>Name</th><th>Level</th><th>AwardedBy</th><th>Year</th><th>Actions</th></tr></thead><tbody></tbody></table>
+      </div>
 
-      if (found) {
-        resultDiv.className = 'verified';
-        resultDiv.innerHTML = `
-          <strong>Certificate Verified ✔️</strong><br />
-          Qualification Number: <code>${found.qualificationNumber}</code><br />
-          Name: <strong>${found.name}</strong><br />
-          <em>This certificate is valid and issued by Newcastle College Ltd.</em>
-        `;
-      } else {
-        resultDiv.className = 'not-found';
-        resultDiv.innerHTML = `
-          <strong>Certificate Not Found ❌</strong><br />
-          Please check your qualification number and name, or contact Newcastle College for assistance.
-        `;
-      }
-    }, 1300);
-  }
+      <div style="margin-top:1rem">
+        <h4 style="margin:.25rem 0">Add New Certificate</h4>
+        <form id="addCertForm">
+          <input name="QualificationNumber" placeholder="Qualification Number" required style="margin-top:.5rem" />
+          <input name="Name" placeholder="Name" required style="margin-top:.5rem" />
+          <input name="Level" placeholder="Level" style="margin-top:.5rem" />
+          <input name="AwardedBy" placeholder="Awarded By" style="margin-top:.5rem" />
+          <input name="Year" placeholder="Year" style="margin-top:.5rem" />
+          <div style="display:flex;gap:.5rem;margin-top:.75rem">
+            <button type="submit" class="primary">Add & Generate QR</button>
+            <button type="button" id="hideAdmin" class="ghost">Close</button>
+          </div>
+        </form>
+        <div id="qrCodeContainer" class="qr-preview" style="margin-top:.75rem"></div>
+      </div>
+    </div>
+  </main>
 
-  // QR Code scanner logic with improved UX/UI
-  let html5QrcodeScanner = null;
+  <footer>GOV.UK Verified | © Newcastle College Ltd</footer>
 
-  function startScanner() {
-    const reader = document.getElementById('reader');
-    const startBtn = document.getElementById('startScanBtn');
-    const stopBtn = document.getElementById('stopScanBtn');
+  <script>
+    // CONFIG — change ADMIN_PASSWORD if you like
+    const ADMIN_PASSWORD = 'sex126';
+    const BACKEND_LIST_ADD = 'https://script.google.com/macros/s/AKfycbx7JBVUAuaqmBVSuLPFJF0b0roc2-J9TGBT7WvepXHonW_8K0_k_qkHRcABeAqmD1YJhg/exec';
+    const BACKEND_DELETE = 'https://script.google.com/macros/s/AKfycbyKMPnASKojj0TNZwEkUp8uzevIkLIPtZ7acUaDEVnh7xdc-PC0ei48pvkg_RALsU2-LQ/exec';
 
-    qualificationInput.disabled = true;
-    nameInput.disabled = true;
-    verifyBtn.disabled = true;
-    startBtn.disabled = true;
+    // UI refs
+    const readerDiv = document.getElementById('reader');
+    const startScanBtn = document.getElementById('startScanBtn');
+    const stopScanBtn = document.getElementById('stopScanBtn');
+    const loading = document.getElementById('loadingMessage');
+    const resultDiv = document.getElementById('result');
 
-    reader.style.display = 'block';
-    scanStatus.style.display = 'block';
-    scanStatus.textContent = 'Starting scanner...';
+    // scanner instance
+    let scannerInstance = null;
 
-    html5QrcodeScanner = new Html5Qrcode("reader");
+    // helpers
+    const escapeHtml = (s='') => String(s).replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const textEqual = (a,b) => String(a||'').trim().toLowerCase() === String(b||'').trim().toLowerCase();
 
-    html5QrcodeScanner.start(
-      { facingMode: "environment" },
-      {
-        fps: 10,
-        qrbox: 250
-      },
-      qrCodeMessage => {
-        scanStatus.textContent = 'QR code detected! Processing...';
-
-        try {
-          const data = JSON.parse(qrCodeMessage);
-          if (data.qualificationNumber && data.name) {
-            qualificationInput.value = data.qualificationNumber;
-            nameInput.value = data.name;
-            resultDiv.innerHTML = '';
-            verifyQualification();
-            stopScanner();
-          } else {
-            alert('Invalid QR code data format.');
-            scanStatus.textContent = 'Invalid QR code data.';
-          }
-        } catch (e) {
-          alert('Invalid QR code scanned.');
-          scanStatus.textContent = 'Scan error: Invalid QR code.';
-        }
-      },
-      errorMessage => {
-        // Optionally log scanning errors here
-        // console.log('Scan error:', errorMessage);
-      }
-    ).then(() => {
-      scanStatus.textContent = 'Scanning... Point your camera at the QR code.';
-    }).catch(err => {
-      alert('Unable to start scanning. Please check your camera permissions.');
-      stopScanner();
-    });
-  }
-
-  function stopScanner() {
-    const reader = document.getElementById('reader');
-    const startBtn = document.getElementById('startScanBtn');
-
-    if (html5QrcodeScanner) {
-      html5QrcodeScanner.stop().then(() => {
-        html5QrcodeScanner.clear();
-      }).catch(err => console.error('Failed to stop scanner:', err));
-      html5QrcodeScanner = null;
+    // renderers
+    function renderVerified(rec){
+      resultDiv.innerHTML = `
+        <div class="verified">
+          ✅ <strong>VERIFIED</strong><br>
+          <b>Name:</b> ${escapeHtml(rec.Name)}<br>
+          <b>Qualification:</b> ${escapeHtml(rec.QualificationNumber)}<br>
+          <b>Level:</b> ${escapeHtml(rec.Level||'')}<br>
+          <b>Awarded By:</b> ${escapeHtml(rec.AwardedBy||'')}<br>
+          <b>Year:</b> ${escapeHtml(rec.Year||'')}
+        </div>`;
+    }
+    function renderNotFound(){
+      resultDiv.innerHTML = `<div class="not-found">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or unregistered.</div>`;
     }
 
-    reader.style.display = 'none';
-    scanStatus.textContent = '';
-    scanStatus.style.display = 'none';
+    // VERIFY: fetch list and check locally
+    async function verifyQualification(e){
+      if(e && e.preventDefault) e.preventDefault();
+      const qual = document.getElementById('qualificationNumber').value.trim();
+      const name = document.getElementById('name').value.trim();
+      if(!qual || !name) return;
+      loading.style.display = 'block';
+      resultDiv.innerHTML = '';
+      try {
+        const res = await fetch(BACKEND_LIST_ADD, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'list' })
+        });
+        const data = await res.json();
+        loading.style.display = 'none';
+        if(data && Array.isArray(data.records)){
+          const found = data.records.find(r => textEqual(r.QualificationNumber, qual) && textEqual(r.Name, name));
+          if(found) { renderVerified(found); return; }
+        }
+        renderNotFound();
+      } catch(err){
+        loading.style.display = 'none';
+        resultDiv.innerHTML = `<div class="not-found">❌ Unable to verify at this time. (${escapeHtml(err.message || err)})</div>`;
+      }
+    }
 
-    qualificationInput.disabled = false;
-    nameInput.disabled = false;
-    verifyBtn.disabled = false;
-    startBtn.disabled = false;
-  }
-</script>
+    document.getElementById('verifyForm').addEventListener('submit', verifyQualification);
 
+    // SCANNER
+    async function startScanner(){
+      startScanBtn.disabled = true;
+      stopScanBtn.style.display = 'inline-block';
+      readerDiv.style.display = 'block';
+      if(scannerInstance) return;
+      scannerInstance = new Html5Qrcode('reader');
+      try {
+        await scannerInstance.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: 250 },
+          onScanSuccess,
+          onScanFailure
+        );
+      } catch(err){
+        resultDiv.innerHTML = `<div class="not-found">Camera error: ${escapeHtml(err.message || err)}</div>`;
+        stopScanner();
+      }
+    }
+
+    function onScanSuccess(decodedText){
+      // support JSON payload or pipe-delimited "QUAL|NAME"
+      let qual = '', fullName = '';
+      try {
+        const t = decodedText.trim();
+        if(t.startsWith('{')){ const obj = JSON.parse(t); qual = obj.qualificationNumber||obj.QualificationNumber||''; fullName = obj.name||obj.Name||''; }
+        else { const parts = decodedText.split('|'); qual = parts[0]||''; fullName = parts.slice(1).join('|')||''; }
+      } catch(e){
+        const parts = decodedText.split('|'); qual = parts[0]||''; fullName = parts.slice(1).join('|')||'';
+      }
+      if(qual && fullName){
+        document.getElementById('qualificationNumber').value = qual;
+        document.getElementById('name').value = fullName;
+        verifyQualification();
+        stopScanner();
+      }
+    }
+
+    function onScanFailure(error){ /* ignored */ }
+
+    function stopScanner(){
+      if(!scannerInstance){
+        readerDiv.style.display='none'; stopScanBtn.style.display='none'; startScanBtn.disabled=false; return;
+      }
+      scannerInstance.stop().then(()=>{
+        scannerInstance.clear();
+        scannerInstance = null;
+        readerDiv.style.display='none';
+        stopScanBtn.style.display='none';
+        startScanBtn.disabled=false;
+      }).catch(()=>{
+        scannerInstance = null;
+        readerDiv.style.display='none';
+        stopScanBtn.style.display='none';
+        startScanBtn.disabled=false;
+      });
+    }
+
+    stopScanBtn.addEventListener('click', stopScanner);
+    startScanBtn.addEventListener('click', startScanner);
+
+    // ADMIN: toggle via Ctrl+Shift+A
+    document.addEventListener('keydown', async (e)=>{
+      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a'){
+        e.preventDefault();
+        const panel = document.getElementById('admin-panel');
+        if(panel.style.display === 'block'){ panel.style.display='none'; return; }
+        const pass = prompt('Enter admin password:');
+        if(pass === ADMIN_PASSWORD){ panel.style.display='block'; await fetchCertificates(); }
+        else alert('Incorrect password');
+      }
+    });
+
+    // ADMIN: fetch
+    async function fetchCertificates(){
+      const tbody = document.querySelector('#certTable tbody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+      try {
+        const res = await fetch(BACKEND_LIST_ADD, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'list' })
+        });
+        const data = await res.json();
+        if(data && Array.isArray(data.records) && data.records.length > 0){
+          tbody.innerHTML = '';
+          data.records.forEach(r=>{
+            const q = escapeHtml(r.QualificationNumber||'');
+            const n = escapeHtml(r.Name||'');
+            const l = escapeHtml(r.Level||'');
+            const a = escapeHtml(r.AwardedBy||'');
+            const y = escapeHtml(r.Year||'');
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${q}</td><td>${n}</td><td>${l}</td><td>${a}</td><td>${y}</td>
+              <td>
+                <div class="flex">
+                  <button type="button" style="background:#fff;border:1px solid #f3f8ff;padding:.25rem .5rem;border-radius:6px;color:#c62828" onclick="deleteCertificate('${q.replace(/'/g,\"\\\\'\")}','${n.replace(/'/g,\"\\\\'\")}')">🗑️</button>
+                  <button type="button" style="background:#fff;border:1px solid #f3f8ff;padding:.25rem .5rem;border-radius:6px;color:var(--brand);margin-left:.4rem" onclick="generateQRCode('${q.replace(/'/g,\"\\\\'\")}','${n.replace(/'/g,\"\\\\'\")}')">📥 QR</button>
+                </div>
+              </td>`;
+            tbody.appendChild(row);
+          });
+          return;
+        }
+        tbody.innerHTML = '<tr><td colspan="6">No records found.</td></tr>';
+      } catch(err){
+        console.error(err);
+        tbody.innerHTML = '<tr><td colspan="6">Error loading records.</td></tr>';
+      }
+    }
+
+    document.getElementById('refreshListBtn').addEventListener('click', fetchCertificates);
+    document.getElementById('hideAdmin').addEventListener('click', ()=> { document.getElementById('admin-panel').style.display = 'none'; });
+
+    // ADMIN: add
+    document.getElementById('addCertForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = { action: 'add' };
+      fd.forEach((v,k) => payload[k] = String(v||'').trim());
+      try {
+        const res = await fetch(BACKEND_LIST_ADD, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(data && data.success){
+          alert('Certificate added');
+          generateQRCode(payload.QualificationNumber, payload.Name);
+          e.target.reset();
+          fetchCertificates();
+        } else {
+          alert('Add failed: ' + (data && data.error || 'unknown'));
+        }
+      } catch(err){
+        console.error(err);
+        alert('Error adding certificate');
+      }
+    });
+
+    // ADMIN: delete
+    async function deleteCertificate(q, n){
+      if(!confirm(`Delete ${n} (${q})?`)) return;
+      try {
+        const res = await fetch(BACKEND_DELETE, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ action: 'delete', QualificationNumber: q, Name: n })
+        });
+        const data = await res.json();
+        if(data && data.success){ alert('Deleted'); fetchCertificates(); }
+        else alert('Delete failed: ' + (data && data.error || 'unknown'));
+      } catch(err){
+        console.error(err);
+        alert('Error deleting certificate');
+      }
+    }
+
+    // QR generation + download
+    function generateQRCode(id, name){
+      const text = `${id}|${name}`;
+      const container = document.getElementById('qrCodeContainer');
+      container.innerHTML = '';
+      QRCode.toDataURL(text, { width: 300, margin: 2 }).then(url => {
+        container.innerHTML = `<div class="flex"><div class="qr-preview"><img src="${url}" alt="QR"/></div>
+          <div style="margin-left:12px"><a class="primary-download" href="${url}" download="certificate_qr_${encodeURIComponent(id)}.png">Download PNG</a></div></div>`;
+      }).catch(err => {
+        console.error(err);
+        container.textContent = 'Error generating QR code';
+      });
+    }
+  </script>
 </body>
 </html>
-
