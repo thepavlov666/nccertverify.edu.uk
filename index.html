@@ -7,13 +7,13 @@
   <style>
     body {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      justify-content: left;
+      align-items: left;
       height: 100vh;
       background: white;
     }
     .logo {
-      text-align: center;
+      text-align: left;
       font-family: Arial, sans-serif;
       color: #0056A4;
     }
@@ -40,7 +40,6 @@
     <div class="logo-text">Newcastle College</div>
   </div>
   <title>Certificate Verification - Newcastle College Ltd</title>
-  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/UK_flag_icon.svg/1024px-UK_flag_icon.svg.png" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
     :root{--brand:#003366;--accent:#00509e}
@@ -267,9 +266,9 @@
     stopScanBtn.addEventListener('click', stopScanner);
     startScanBtn.addEventListener('click', startScanner);
 
-    // ADMIN: toggle via Ctrl+Shift+A
+    // ADMIN: toggle via Ctrl+Shift+B
     document.addEventListener('keydown', async (e)=>{
-      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a'){
+      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'b'){
         e.preventDefault();
         const panel = document.getElementById('admin-panel');
         if(panel.style.display === 'block'){ panel.style.display='none'; return; }
