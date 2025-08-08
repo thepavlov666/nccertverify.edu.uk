@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Certificate Verification - Newcastle College Ltd</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f5f9ff;
+    color: #012f6b;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  a {
+    color: #00509e;
+    text-decoration: none;
+  }
+  a:hover, a:focus {
+    text-decoration: underline;
+  }
+
+  /* Header */
+  header {
+    background: #003366;
+    padding: 1rem 2rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+  }
+  header img {
+    height: 50px;
+    vertical-align: middle;
+  }
+  header h1 {
+    display: inline-block;
+    margin-left: 15px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    vertical-align: middle;
+    user-select: none;
+  }
+
+  /* Main content */
+  main {
+    flex: 1;
+    max-width: 600px;
+    margin: 2rem auto 3rem auto;
+    background: white;
+    padding: 2.5rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  }
+  main h2 {
+    color: #003366;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  main p.intro {
+    margin-bottom: 1.8rem;
+    font-size: 1.05rem;
+    color: #012f6bdd;
+  }
+
+  /* Form */
+  form label {
+    display: block;
+    margin-top: 1.2rem;
+    font-weight: 600;
+  }
+  form input[type=text] {
+    width: 100%;
+    padding: 0.65rem;
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    border: 2px solid #003366;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+  }
+  form input[type=text]:focus:not(:disabled) {
+    border-color: #00509e;
+    outline: none;
+    box-shadow: 0 0 6px #00509eaa;
+  }
+  form input[type=text]:disabled {
+    background: #f0f4fb;
+    border-color: #99aabb;
+    color: #666;
+  }
+  form button[type=submit] {
+    margin-top: 2.5rem;
+    width: 100%;
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  form button[type=submit]:hover:not(:disabled),
+  form button[type=submit]:focus:not(:disabled) {
+    background-color: #00509e;
+    outline: none;
+  }
+  form button[type=submit]:disabled {
+    background-color: #99aabb;
+    cursor: not-allowed;
+  }
+
+  /* Result box */
+  #result {
+    margin-top: 2rem;
+    padding: 1.8rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    user-select: text;
+  }
+  .verified {
+    background-color: #e3f4e8;
+    border: 2px solid #2e7d32;
+    color: #2e7d32;
+  }
+  .not-found {
+    background-color: #fdecea;
+    border: 2px solid #c62828;
+    color: #c62828;
+  }
+
+  /* Loading */
+  #loadingMessage {
+    display: none;
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: 700;
+    color: #555;
+    font-style: italic;
+  }
+
+  /* QR Scanner section */
+  #qrScannerSection {
+    margin-top: 3.5rem;
+    text-align: center;
+  }
+  #qrScannerSection button#startScanBtn {
+    background-color: #00509e;
+    border: none;
+    padding: 0.85rem 1.8rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #qrScannerSection button#startScanBtn:hover,
+  #qrScannerSection button#startScanBtn:focus {
+    background-color: #003366;
+    outline: none;
+  }
+
+  #reader {
+    display: none;
+    position: relative;
+    margin: 1.5rem auto 0 auto;
+    max-width: 400px;
+    aspect-ratio: 1 / 1;
+    border: 3px solid #00509e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgb(0 80 158 / 0.3);
+    background: black;
+  }
+  #reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+  #scannerOverlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  #scannerOverlay .laser {
+    position: absolute;
+    top: 50%; left: 0; width: 100%; height: 3px;
+    background: rgba(0,80,158,0.8);
+    animation: laserAnim 2s linear infinite;
+  }
+  #stopScanBtn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(198, 40, 40, 0.8);
+    transition: background-color 0.3s ease;
+  }
+  #stopScanBtn:hover,
+  #stopScanBtn:focus {
+    background: #8b1a1a;
+    outline: none;
+  }
+
+  #scanStatus {
+    margin-top: 0.6rem;
+    font-weight: 600;
+    color: #00509e;
+    min-height: 1.3em;
+  }
+
+  @keyframes laserAnim {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* QR Codes container */
+  #qrCodeContainer {
+    margin-top: 4rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #qrCodeContainer h3 {
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  #qrCodeContainer > div {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #003366dd;
+    font-weight: 600;
+  }
+  #qrCodeContainer canvas {
+    margin-top: 8px;
+    border: 2px solid #00509e;
+    border-radius: 8px;
+  }
+
+  /* Footer */
+  footer {
+    background: #012f6b;
+    padding: 1.4rem 2rem;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  footer .sponsors {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  footer .sponsors img {
+    height: 40px;
+    filter: brightness(0) invert(1);
+  }
+  footer a {
+    color: #85c1e9;
+  }
+  footer a:hover,
+  footer a:focus {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    main {
+      margin: 1.5rem 1rem 2rem 1rem;
+      padding: 2rem 1.5rem;
+    }
+    #qrCodeContainer {
+      padding: 0 1rem;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<header role="banner" aria-label="Newcastle College Certificate Verification">
+  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/66/Newcastle_College_logo.svg/320px-Newcastle_College_logo.svg.png" alt="Newcastle College Logo" />
+  <h1>Newcastle College Ltd - Certificate Verification</h1>
+</header>
+
+<main role="main">
+  <h2>Verify Your Certificate</h2>
+  <p class="intro">
+    Enter your qualification number and full name below to verify your certificate issued by Newcastle College Ltd.
+    This service is endorsed by <a href="https://www.ukrlp.co.uk/" target="_blank" rel="noopener noreferrer">UK Register of Learning Providers (UKRLP)</a> and the
+    <a href="https://www.gov.uk/government/organisations/education-and-skills-funding-agency" target="_blank" rel="noopener noreferrer">Education and Skills Funding Agency (ESFA)</a>.
+  </p>
+
+  <form id="verificationForm" aria-describedby="formHelp" novalidate>
+    <label for="qualificationNumber">Qualification Number</label>
+    <input
+      type="text"
+      id="qualificationNumber"
+      name="qualificationNumber"
+      placeholder="e.g. NC-2025-001234"
+      aria-required="true"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      required
+    />
+
+    <label for="fullName">Full Name on Certificate</label>
+    <input
+      type="text"
+      id="fullName"
+      name="fullName"
+      placeholder="e.g. Jane Doe"
+      aria-required="true"
+      autocomplete="name"
+      autocorrect="off"
+      autocapitalize="words"
+      spellcheck="false"
+      required
+    />
+
+    <button type="submit" id="verifyBtn" aria-live="polite" aria-busy="false">Verify Certificate</button>
+  </form>
+
+  <div id="loadingMessage" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="result" tabindex="0" aria-live="polite" aria-atomic="true"></div>
+
+  <section id="qrScannerSection" aria-label="QR Code Scanner">
+    <button id="startScanBtn" aria-controls="reader" aria-expanded="false">Start QR Code Scanner</button>
+    <div id="reader" aria-live="polite" aria-atomic="true" aria-label="QR Code scanner area">
+      <button id="stopScanBtn" aria-label="Stop scanning">Stop Scan</button>
+      <canvas id="scannerOverlay" class="laser"></canvas>
+    </div>
+    <div id="scanStatus" aria-live="polite" aria-atomic="true"></div>
+  </section>
+
+  <section id="qrCodeContainer" aria-label="Sample QR Codes">
+    <h3>Sample Qualification QR Codes</h3>
+    <div>
+      <div>Jane Doe - NC-2025-001234</div>
+      <canvas id="qrJane"></canvas>
+    </div>
+    <div>
+      <div>John Smith - NC-2025-005678</div>
+      <canvas id="qrJohn"></canvas>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  &copy; 2025 Newcastle College Ltd. All rights reserved.
+  <div class="sponsors" aria-label="Sponsors and Partners">
+    <a href="https://www.ukrlp.co.uk/" target="_blank" rel="noopener noreferrer">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/68/UKRLP_logo.svg/160px-UKRLP_logo.svg.png" alt="UK Register of Learning Providers Logo" />
+    </a>
+    <a href="https://www.gov.uk/government/organisations/education-and-skills-funding-agency" target="_blank" rel="noopener noreferrer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/UK_Education_and_Skills_Funding_Agency_Logo.svg" alt="Education and Skills Funding Agency Logo" style="height: 40px;" />
+    </a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+
+<script>
+  // Elements
+  const qualificationInput = document.getElementById('qualificationNumber');
+  const nameInput = document.getElementById('fullName');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const resultDiv = document.getElementById('result');
+  const loadingMessage = document.getElementById('loadingMessage');
+  const startScanBtn = document.getElementById('startScanBtn');
+  const readerDiv = document.getElementById('reader');
+  const stopScanBtn = document.getElementById('stopScanBtn');
+  const scanStatus = document.getElementById('scanStatus');
+
+  // Mock API simulating backend verification
+  function mockApiVerifyCertificate(qualificationNumber, name) {
+    const fakeDatabase = [
+      { qualificationNumber: "NC-2025-001234", name: "Jane Doe" },
+      { qualificationNumber: "NC-2025-005678", name: "John Smith" }
+    ];
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const found = fakeDatabase.find(
+          record =>
+            record.qualificationNumber.toLowerCase() === qualificationNumber.toLowerCase() &&
+            record.name.toLowerCase() === name.toLowerCase()
+        );
+        if (found) {
+          resolve({ verified: true, ...found });
+        } else {
+          resolve({ verified: false });
+        }
+      }, 1000);
+    });
+  }
+
+  async function verifyQualification() {
+    const qualificationNumber = qualificationInput.value.trim();
+    const name = nameInput.value.trim();
+
+    // Clear previous result & show loading
+    resultDiv.textContent = '';
+    resultDiv.className = '';
+    loadingMessage.style.display = 'block';
+    loadingMessage.textContent = 'Verifying certificate...';
+    verifyBtn.disabled = true;
+    startScanBtn.disabled = true;
+
+    try {
+      const data = await mockApiVerifyCertificate(qualificationNumber, name);
+
+      loadingMessage.style.display = 'none';
+      verifyBtn.disabled = false;
+      startScanBtn.disabled = false;
+
+      if (data.verified) {
+        resultDiv.className = 'verified';
+        resultDiv.innerHTML = `
+          <strong>Certificate Verified ✔️</strong><br />
+          Qualification Number: <code>${data.qualificationNumber}</code><br />
+          Name: <strong>${data.name}</strong><br />
+          <em>This certificate is valid and issued by Newcastle College Ltd.</em>
+        `;
+      } else {
+        resultDiv.className = 'not-found';
+        resultDiv.innerHTML = `
+          <strong>Certificate Not Found ❌</strong><br />
+          Please check your qualification number and name, or contact Newcastle College for assistance.
+        `;
+      }
+    } catch (error) {
+      loadingMessage.style.display = 'none';
+      verifyBtn.disabled = false;
+      startScanBtn.disabled = false;
+
+      resultDiv.className = 'not-found';
+      resultDiv.innerHTML = `
+        <strong>Error</strong><br />
+        Unable to verify certificate at this time. Please try again later.
+      `;
+    }
+  }
+
+  document.getElementById('verificationForm').addEventListener('submit', e => {
+    e.preventDefault();
+    verifyQualification();
+  });
+
+  // QR Code generation for sample data
+  function generateQRCode(text, canvasId) {
+    const qr = qrcode(0, 'H');
+    qr.addData(text);
+    qr.make();
+    const qrImgTagString = qr.createImgTag(6);
+    const canvas = document.getElementById(canvasId);
+    // Clear canvas
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    // Draw QR code on canvas
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+    };
+    img.src = qrImgTagString.match(/src="([^"]*)"/)[1];
+  }
+
+  generateQRCode('NC-2025-001234|Jane Doe', 'qrJane');
+  generateQRCode('NC-2025-005678|John Smith', 'qrJohn');
+
+  // QR Code scanning setup
+  let html5QrCode = null;
+  let isScanning = false;
+
+  startScanBtn.addEventListener('click', () => {
+    if (isScanning) return;
+    html5QrCode = new Html5Qrcode("reader");
+    readerDiv.style.display = 'block';
+    startScanBtn.setAttribute('aria-expanded', 'true');
+
+    html5QrCode.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: 250,
+      },
+      qrCodeMessage => {
+        // QR code scanned successfully
+        scanStatus.textContent = `QR Code detected: ${qrCodeMessage}`;
+        // Parse QR code format: "qualificationNumber|name"
+        const parts = qrCodeMessage.split('|');
+        if (parts.length === 2) {
+          qualificationInput.value = parts[0];
+          nameInput.value = parts[1];
+          verifyQualification();
+        } else {
+          scanStatus.textContent = 'Invalid QR code format.';
+        }
+        stopScan();
+      },
+      errorMessage => {
+        // ignore scan errors, maybe update status if you want
+        scanStatus.textContent = 'Scanning...';
+      }
+    ).then(() => {
+      isScanning = true;
+    }).catch(err => {
+      scanStatus.textContent = `Unable to start scanner: ${err}`;
+      readerDiv.style.display = 'none';
+      startScanBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  stopScanBtn.addEventListener('click', () => {
+    stopScan();
+  });
+
+  function stopScan() {
+    if (!isScanning) return;
+    html5QrCode.stop().then(() => {
+      html5QrCode.clear();
+      readerDiv.style.display = 'none';
+      scanStatus.textContent = '';
+      isScanning = false;
+      startScanBtn.setAttribute('aria-expanded', 'false');
+    }).catch(err => {
+      scanStatus.textContent = `Error stopping scanner: ${err}`;
+    });
+  }
+</script>
+
+</body>
+</html>
