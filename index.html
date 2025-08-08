@@ -3,380 +3,699 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Newcastle College Logo (Code)</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: left;
-      align-items: left;
-      height: 100vh;
-      background: white;
-    }
-    .logo {
-      text-align: left;
-      font-family: Arial, sans-serif;
-      color: #0056A4;
-    }
-    .logo-text {
-      font-size: 24px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="logo">
-    <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- Arch -->
-      <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="#0056A4" stroke-width="6" fill="none"/>
-
-      <!-- Vertical bars under arch -->
-      <line x1="50" y1="100" x2="50" y2="55" stroke="#0056A4" stroke-width="4"/>
-      <line x1="75" y1="100" x2="75" y2="40" stroke="#0056A4" stroke-width="4"/>
-      <line x1="100" y1="100" x2="100" y2="30" stroke="#0056A4" stroke-width="4"/>
-      <line x1="125" y1="100" x2="125" y2="40" stroke="#0056A4" stroke-width="4"/>
-      <line x1="150" y1="100" x2="150" y2="55" stroke="#0056A4" stroke-width="4"/>
-    </svg>
-    <div class="logo-text">Newcastle College</div>
-  </div>
   <title>Certificate Verification - Newcastle College Ltd</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-    :root{--brand:#003366;--accent:#00509e}
+    :root{
+      --brand:#003366;
+      --accent:#00509e;
+      --success:#1f7a3a;
+      --danger:#8a1e1e;
+      --muted:#556;
+      --card-bg:#fff;
+    }
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f5f9ff;color:#012f6b;min-height:100vh;display:flex;flex-direction:column}
-    header{background:var(--brand);color:#fff;padding:1rem 1.5rem;text-align:center}
-    header img{height:44px;vertical-align:middle}
-    header h1{display:inline-block;margin:0 0 0 .75rem;font-size:1.25rem;font-weight:600;vertical-align:middle}
-    main{max-width:760px;margin:2rem auto;padding:2rem;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(2,17,55,.06)}
-    h2{color:var(--brand);margin-top:0}
-    p.intro{color:#234;opacity:.9}
+    header{background:linear-gradient(90deg,var(--brand),#00254a);color:#fff;padding:1rem 1.5rem;text-align:center}
+    main{max-width:980px;margin:1.5rem auto;padding:1.5rem;background:var(--card-bg);border-radius:12px;box-shadow:0 12px 40px rgba(2,17,55,.07)}
+    h1,h2{margin:.25rem 0}
     .controls{display:flex;gap:12px;flex-wrap:wrap;margin:1rem 0}
-    button, input, select{font:inherit}
-    input[type=text]{width:100%;padding:.7rem;border:1.5px solid var(--brand);border-radius:8px}
-    button.primary{background:var(--brand);color:#fff;border:none;padding:.9rem 1rem;border-radius:8px;cursor:pointer;font-weight:700}
-    button.ghost{background:#fff;border:1px solid #d5dff7;color:var(--brand);padding:.6rem 1rem;border-radius:8px;cursor:pointer}
-    #reader{display:none;margin:1rem auto;max-width:420px;border:3px solid var(--accent);border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#000}
-    #result{margin-top:1rem}
-    .verified{background:#e6f9ec;border:1px solid #2e7d32;color:#1f5f2f;padding:1rem;border-radius:8px}
-    .not-found{background:#fff1f1;border:1px solid #c62828;color:#8a1e1e;padding:1rem;border-radius:8px}
-    .info-small{font-size:.85rem;color:#556;margin-top:1rem}
-    footer{background:#012f6b;color:#fff;padding:.9rem;text-align:center;margin-top:2rem}
-    #admin-panel{display:none;margin-top:1.5rem;padding:1rem;border-radius:10px;border:2px dashed #dbe8ff;background:#fff}
+    input[type=text], textarea{width:100%;padding:.6rem;border:1.5px solid var(--brand);border-radius:8px}
+    button{font:inherit}
+    .primary{background:var(--brand);color:#fff;border:none;padding:.65rem 1rem;border-radius:8px;cursor:pointer}
+    .ghost{background:#fff;border:1px solid #dbe8ff;color:var(--brand);padding:.5rem .8rem;border-radius:8px;cursor:pointer}
+    #reader{display:none;margin:1rem auto;max-width:520px;border:3px solid var(--accent);border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#000}
+    #status{margin-top:.5rem}
+    .verified{background:#e6f9ec;border:1px solid var(--success);color:var(--success);padding:1rem;border-radius:8px}
+    .notfound{background:#fff1f1;border:1px solid #f1a0a0;color:var(--danger);padding:1rem;border-radius:8px}
+    #admin-panel{display:none;margin-top:1rem;padding:1rem;border-radius:10px;border:2px dashed #dbe8ff;background:#fff}
     table{width:100%;border-collapse:collapse;margin-top:.75rem}
-    th,td{padding:.5rem;border:1px solid #e6eef8;text-align:left;font-size:.95rem}
+    th,td{padding:.5rem;border:1px solid #e6eef8;text-align:left}
     th{background:#f3f8ff}
     .small{font-size:.9rem}
+    .muted{color:var(--muted);font-size:.9rem}
+    .banner{padding:.6rem;border-radius:8px;margin-top:.75rem}
+    .warning{background:#fff9e6;border:1px solid #ffd27a;color:#6b4a00}
+    .error{background:#ffecec;border:1px solid #f5c2c2;color:#6b1e1e}
     .flex{display:flex;gap:.5rem;align-items:center}
-    .qr-preview img{max-width:160px;border-radius:8px;border:1px solid #e6eef8}
-    a.primary-download{display:inline-block;padding:.45rem .7rem;background:var(--brand);color:#fff;border-radius:6px;text-decoration:none}
+    .qr-preview img{max-width:220px;border-radius:8px;border:1px solid #e6eef8}
+    footer{background:#012f6b;color:#fff;padding:.8rem;text-align:center;margin-top:1.5rem;border-radius:0 0 12px 12px}
+    .gov-cred { font-size:0.9rem; color:#cfe; opacity:0.95; margin-top:6px }
+    .verified-badge { display:inline-flex;gap:8px;align-items:center;padding:.35rem .6rem;border-radius:999px;background:#eaf6ff;border:1px solid rgba(0,80,158,0.12);font-weight:600;color:var(--accent) }
+    .meta { font-size:.9rem;color:#334; }
+    .big { font-size:1.05rem;font-weight:600 }
+    .printable { display:none; }
+    .admin-note { font-size:.85rem;color:#666;margin-top:.4rem }
+    .controls .small-ghost { padding:.45rem .7rem }
+    .grid { display:grid; grid-template-columns: 1fr 320px; gap:16px; align-items:start }
+    @media (max-width:900px){ .grid{ grid-template-columns: 1fr; } #reader{max-width:360px} }
   </style>
 
-  <!-- Libraries -->
+  <!-- QR libraries -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 <body>
   <header>
-    <img src="https://www.newcastlecollege.ac.uk/wp-content/themes/ncl/dist/images/logo.svg" alt="Newcastle College Logo" />
-    <h1>Certificate Verification</h1>
+    <h1>Newcastle College Ltd — Certificate Verification</h1>
+    <div class="gov-cred">Verified provider — UK Register of Learning Providers (UKRLP) · Regulated by OFQUAL</div>
   </header>
 
   <main>
     <h2>Verify Your Qualification</h2>
-    <p class="intro">Scan a certificate QR or enter the Qualification Number and Candidate Name to verify a record issued by Newcastle College Ltd.</p>
+    <p class="muted">Scan the QR/barcode on the certificate or enter the Qualification Number + Candidate Name. The site will autofill details and display a verification summary with a verification fingerprint.</p>
 
     <div class="controls">
-      <button id="startScanBtn" class="primary">📷 Scan QR Code</button>
-      <button id="stopScanBtn" class="ghost" style="display:none">✕ Stop Scanner</button>
+      <button id="startScan" class="primary">📷 Start Scanner</button>
+      <button id="stopScan" class="ghost" style="display:none">✕ Stop Scanner</button>
+      <button id="selfTest" class="ghost small-ghost">▶ Run Self-test</button>
+      <button id="exportCSV" class="ghost small-ghost">⬇ Export CSV</button>
+      <div style="margin-left:auto" class="meta">Tip: open admin with <strong>Ctrl+Shift+A</strong></div>
     </div>
 
-    <div id="reader" aria-hidden="true"></div>
+    <div class="grid">
+      <div>
+        <div id="reader" aria-hidden="true"></div>
 
-    <form id="verifyForm" autocomplete="off">
-      <label for="qualificationNumber" class="small">Qualification Number</label>
-      <input type="text" id="qualificationNumber" placeholder="e.g. UKQ-001-A" />
+        <form id="verifyForm" autocomplete="off" style="margin-top:12px">
+          <label class="small">Qualification Number</label>
+          <input type="text" id="qualificationNumber" placeholder="e.g. NC-2025-001234" />
+          <label class="small" style="margin-top:.5rem">Candidate Name</label>
+          <input type="text" id="name" placeholder="e.g. Jane Doe" />
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button type="submit" class="primary">Verify Certificate</button>
+            <button type="button" id="clearBtn" class="ghost">Clear</button>
+            <button type="button" id="copyLink" class="ghost">🔗 Copy Verification Link</button>
+          </div>
+        </form>
 
-      <label for="name" class="small" style="margin-top:.5rem">Candidate Name</label>
-      <input type="text" id="name" placeholder="e.g. Benjamin Wayne" />
+        <div id="loading" style="display:none;margin-top:.75rem">Checking...</div>
+        <div id="status" style="margin-top:10px"></div>
+        <div id="apiNotice" class="banner warning" style="display:none;margin-top:1rem"></div>
+        <div id="apiError" class="banner error" style="display:none;margin-top:1rem"></div>
 
-      <button type="submit" class="primary" style="margin-top:1rem">Verify Certificate</button>
-    </form>
+        <div class="admin-note">Admin features include QR generation (URL or full payload), printable labels, and an audit-friendly verification ID. Change the admin password before deploying.</div>
+      </div>
 
-    <div id="loadingMessage" style="display:none;margin-top:.75rem">Checking...</div>
-    <div id="result" aria-live="polite"></div>
-
-    <div class="info-small">Provider: Newcastle College Ltd | UKPRN: 10093850. Listed on UKRLP. Regulated by OFQUAL.</div>
-
-    <div id="admin-panel">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <h3 style="margin:.25rem 0">🔒 Admin Panel</h3>
-        <div class="flex">
-          <button id="refreshListBtn" class="ghost">🔄 Refresh</button>
+      <aside style="min-width:240px">
+        <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#f7fbff);border:1px solid #e7f0ff">
+          <div class="verified-badge">🏛️ Official verification</div>
+          <div style="margin-top:10px">
+            <div id="summaryTitle" class="big">No certificate selected</div>
+            <div id="summarySub" class="meta">Awaiting scan or manual entry.</div>
+            <div id="summaryBody" style="margin-top:10px"></div>
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button id="printBtn" class="primary" style="display:none">🖨️ Print Certificate</button>
+              <button id="downloadLabel" class="ghost" style="display:none">⬇ Download QR Label</button>
+            </div>
+          </div>
         </div>
+
+        <div style="margin-top:12px;padding:12px;border-radius:10px;background:#fff;border:1px solid #eef6ff">
+          <div class="small"><strong>Connection</strong></div>
+          <div id="connStatus" class="muted" style="margin-top:6px">Not checked</div>
+          <div style="margin-top:8px;font-size:.85rem"><strong>Last verification:</strong> <span id="lastVerified">—</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Admin (hidden by keyboard shortcut) -->
+    <div id="admin-panel" aria-hidden="true">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">🔒 Admin Panel</h3>
+        <div class="flex"><button id="refreshListBtn" class="ghost">🔄 Refresh</button><button id="logoutAdmin" class="ghost">Logout</button></div>
       </div>
 
       <div style="margin-top:.5rem;overflow:auto;max-height:300px">
         <table id="certTable"><thead><tr><th>QualificationNumber</th><th>Name</th><th>Level</th><th>AwardedBy</th><th>Year</th><th>Actions</th></tr></thead><tbody></tbody></table>
       </div>
 
-      <div style="margin-top:1rem">
-        <h4 style="margin:.25rem 0">Add New Certificate</h4>
-        <form id="addCertForm">
-          <input name="QualificationNumber" placeholder="Qualification Number" required style="margin-top:.5rem" />
-          <input name="Name" placeholder="Name" required style="margin-top:.5rem" />
-          <input name="Level" placeholder="Level" style="margin-top:.5rem" />
-          <input name="AwardedBy" placeholder="Awarded By" style="margin-top:.5rem" />
-          <input name="Year" placeholder="Year" style="margin-top:.5rem" />
-          <div style="display:flex;gap:.5rem;margin-top:.75rem">
-            <button type="submit" class="primary">Add & Generate QR</button>
-            <button type="button" id="hideAdmin" class="ghost">Close</button>
-          </div>
-        </form>
-        <div id="qrCodeContainer" class="qr-preview" style="margin-top:.75rem"></div>
-      </div>
+      <h4 style="margin-top:.8rem">Add New Certificate</h4>
+      <form id="addCertForm">
+        <input name="QualificationNumber" placeholder="Qualification Number" required style="margin-top:.5rem" />
+        <input name="Name" placeholder="Name" required style="margin-top:.5rem" />
+        <input name="Level" placeholder="Level" style="margin-top:.5rem" />
+        <input name="AwardedBy" placeholder="Awarded By" style="margin-top:.5rem" />
+        <input name="Year" placeholder="Year" style="margin-top:.5rem" />
+        <div style="display:flex;gap:.5rem;margin-top:.6rem;align-items:center">
+          <button type="submit" class="primary">Add & Generate QR</button>
+          <label style="display:inline-flex;align-items:center;gap:8px;margin-left:8px" class="muted">
+            <input type="checkbox" id="encodeFullPayload" /> Encode full payload in QR
+          </label>
+          <button type="button" id="hideAdmin" class="ghost" style="margin-left:auto">Close</button>
+        </div>
+      </form>
+
+      <div id="qrCodeContainer" class="qr-preview" style="margin-top:.75rem"></div>
     </div>
   </main>
 
-  <footer>GOV.UK Verified | © Newcastle College Ltd</footer>
+  <footer>© Newcastle College Ltd</footer>
 
   <script>
-    // CONFIG — change ADMIN_PASSWORD if you like
-    const ADMIN_PASSWORD = 'sex126';
-    const BACKEND_LIST_ADD = 'https://script.google.com/macros/s/AKfycbx7JBVUAuaqmBVSuLPFJF0b0roc2-J9TGBT7WvepXHonW_8K0_k_qkHRcABeAqmD1YJhg/exec';
-    const BACKEND_DELETE = 'https://script.google.com/macros/s/AKfycbyKMPnASKojj0TNZwEkUp8uzevIkLIPtZ7acUaDEVnh7xdc-PC0ei48pvkg_RALsU2-LQ/exec';
+  // ----------------- CONFIG -----------------
+  // CHANGE THIS PASSWORD BEFORE DEPLOYING
+  const ADMIN_PASSWORD = 'sex126'; // << change this
+  const BACKEND_LIST_ADD = 'https://script.google.com/macros/s/AKfycbx7JBVUAuaqmBVSuLPFJF0b0roc2-J9TGBT7WvepXHonW_8K0_k_qkHRcABeAqmD1YJhg/exec';
+  const BACKEND_DELETE   = 'https://script.google.com/macros/s/AKfycbyKMPnASKojj0TNZwEkUp8uzevIkLIPtZ7acUaDEVnh7xdc-PC0ei48pvkg_RALsU2-LQ/exec';
+  // ------------------------------------------
 
-    // UI refs
-    const readerDiv = document.getElementById('reader');
-    const startScanBtn = document.getElementById('startScanBtn');
-    const stopScanBtn = document.getElementById('stopScanBtn');
-    const loading = document.getElementById('loadingMessage');
-    const resultDiv = document.getElementById('result');
+  // Local fallback data
+  let usingMock = false;
+  const mockRecords = [
+    { QualificationNumber: 'NC-2025-001234', Name: 'Jane Doe', Level: 'Level 4 BTEC', AwardedBy: 'Newcastle College Ltd', Year: '2025' },
+    { QualificationNumber: 'NC-2025-005678', Name: 'John Smith', Level: 'Level 3 NVQ', AwardedBy: 'Newcastle College Ltd', Year: '2025' }
+  ];
 
-    // scanner instance
-    let scannerInstance = null;
+  // UI refs
+  const readerEl = document.getElementById('reader');
+  const startBtn = document.getElementById('startScan');
+  const stopBtn = document.getElementById('stopScan');
+  const loadingEl = document.getElementById('loading');
+  const statusEl = document.getElementById('status');
+  const apiNotice = document.getElementById('apiNotice');
+  const apiError = document.getElementById('apiError');
+  const connStatus = document.getElementById('connStatus');
+  const lastVerifiedEl = document.getElementById('lastVerified');
+  const summaryTitle = document.getElementById('summaryTitle');
+  const summarySub = document.getElementById('summarySub');
+  const summaryBody = document.getElementById('summaryBody');
+  const printBtn = document.getElementById('printBtn');
+  const downloadLabel = document.getElementById('downloadLabel');
+  const exportCSV = document.getElementById('exportCSV');
 
-    // helpers
-    const escapeHtml = (s='') => String(s).replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const textEqual = (a,b) => String(a||'').trim().toLowerCase() === String(b||'').trim().toLowerCase();
+  function setApiNotice(msg){ apiNotice.style.display = msg ? 'block' : 'none'; apiNotice.textContent = msg || '' }
+  function setApiError(msg){ apiError.style.display = msg ? 'block' : 'none'; apiError.textContent = msg || '' }
 
-    // renderers
-    function renderVerified(rec){
-      resultDiv.innerHTML = `
-        <div class="verified">
-          ✅ <strong>VERIFIED</strong><br>
-          <b>Name:</b> ${escapeHtml(rec.Name)}<br>
-          <b>Qualification:</b> ${escapeHtml(rec.QualificationNumber)}<br>
-          <b>Level:</b> ${escapeHtml(rec.Level||'')}<br>
-          <b>Awarded By:</b> ${escapeHtml(rec.AwardedBy||'')}<br>
-          <b>Year:</b> ${escapeHtml(rec.Year||'')}
-        </div>`;
-    }
-    function renderNotFound(){
-      resultDiv.innerHTML = `<div class="not-found">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or unregistered.</div>`;
-    }
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
+  function textEqual(a,b){ return String(a||'').trim().toLowerCase() === String(b||'').trim().toLowerCase() }
 
-    // VERIFY: fetch list and check locally
-    async function verifyQualification(e){
-      if(e && e.preventDefault) e.preventDefault();
-      const qual = document.getElementById('qualificationNumber').value.trim();
-      const name = document.getElementById('name').value.trim();
-      if(!qual || !name) return;
-      loading.style.display = 'block';
-      resultDiv.innerHTML = '';
-      try {
-        const res = await fetch(BACKEND_LIST_ADD, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ action: 'list' })
-        });
-        const data = await res.json();
-        loading.style.display = 'none';
-        if(data && Array.isArray(data.records)){
-          const found = data.records.find(r => textEqual(r.QualificationNumber, qual) && textEqual(r.Name, name));
-          if(found) { renderVerified(found); return; }
-        }
-        renderNotFound();
-      } catch(err){
-        loading.style.display = 'none';
-        resultDiv.innerHTML = `<div class="not-found">❌ Unable to verify at this time. (${escapeHtml(err.message || err)})</div>`;
-      }
-    }
-
-    document.getElementById('verifyForm').addEventListener('submit', verifyQualification);
-
-    // SCANNER
-    async function startScanner(){
-      startScanBtn.disabled = true;
-      stopScanBtn.style.display = 'inline-block';
-      readerDiv.style.display = 'block';
-      if(scannerInstance) return;
-      scannerInstance = new Html5Qrcode('reader');
-      try {
-        await scannerInstance.start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: 250 },
-          onScanSuccess,
-          onScanFailure
-        );
-      } catch(err){
-        resultDiv.innerHTML = `<div class="not-found">Camera error: ${escapeHtml(err.message || err)}</div>`;
-        stopScanner();
-      }
-    }
-
-    function onScanSuccess(decodedText){
-      // support JSON payload or pipe-delimited "QUAL|NAME"
-      let qual = '', fullName = '';
-      try {
-        const t = decodedText.trim();
-        if(t.startsWith('{')){ const obj = JSON.parse(t); qual = obj.qualificationNumber||obj.QualificationNumber||''; fullName = obj.name||obj.Name||''; }
-        else { const parts = decodedText.split('|'); qual = parts[0]||''; fullName = parts.slice(1).join('|')||''; }
-      } catch(e){
-        const parts = decodedText.split('|'); qual = parts[0]||''; fullName = parts.slice(1).join('|')||'';
-      }
-      if(qual && fullName){
-        document.getElementById('qualificationNumber').value = qual;
-        document.getElementById('name').value = fullName;
-        verifyQualification();
-        stopScanner();
-      }
-    }
-
-    function onScanFailure(error){ /* ignored */ }
-
-    function stopScanner(){
-      if(!scannerInstance){
-        readerDiv.style.display='none'; stopScanBtn.style.display='none'; startScanBtn.disabled=false; return;
-      }
-      scannerInstance.stop().then(()=>{
-        scannerInstance.clear();
-        scannerInstance = null;
-        readerDiv.style.display='none';
-        stopScanBtn.style.display='none';
-        startScanBtn.disabled=false;
-      }).catch(()=>{
-        scannerInstance = null;
-        readerDiv.style.display='none';
-        stopScanBtn.style.display='none';
-        startScanBtn.disabled=false;
-      });
-    }
-
-    stopScanBtn.addEventListener('click', stopScanner);
-    startScanBtn.addEventListener('click', startScanner);
-
-    // ADMIN: toggle via Ctrl+Shift+B
-    document.addEventListener('keydown', async (e)=>{
-      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'b'){
-        e.preventDefault();
-        const panel = document.getElementById('admin-panel');
-        if(panel.style.display === 'block'){ panel.style.display='none'; return; }
-        const pass = prompt('Enter admin password:');
-        if(pass === ADMIN_PASSWORD){ panel.style.display='block'; await fetchCertificates(); }
-        else alert('Incorrect password');
-      }
+  // safer fetch with timeout
+  function timeoutFetch(url, opts = {}, ms = 9000){
+    return new Promise((resolve, reject) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => { controller.abort(); }, ms);
+      fetch(url, Object.assign({}, opts, { signal: controller.signal })).then(r => { clearTimeout(id); resolve(r); }).catch(err => { clearTimeout(id); reject(err); });
     });
+  }
 
-    // ADMIN: fetch
-    async function fetchCertificates(){
-      const tbody = document.querySelector('#certTable tbody');
-      tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
-      try {
-        const res = await fetch(BACKEND_LIST_ADD, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ action: 'list' })
-        });
-        const data = await res.json();
-        if(data && Array.isArray(data.records) && data.records.length > 0){
-          tbody.innerHTML = '';
-          data.records.forEach(r=>{
-            const q = escapeHtml(r.QualificationNumber||'');
-            const n = escapeHtml(r.Name||'');
-            const l = escapeHtml(r.Level||'');
-            const a = escapeHtml(r.AwardedBy||'');
-            const y = escapeHtml(r.Year||'');
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${q}</td><td>${n}</td><td>${l}</td><td>${a}</td><td>${y}</td>
-              <td>
-                <div class="flex">
-                  <button type="button" style="background:#fff;border:1px solid #f3f8ff;padding:.25rem .5rem;border-radius:6px;color:#c62828" onclick="deleteCertificate('${q.replace(/'/g,\"\\\\'\")}','${n.replace(/'/g,\"\\\\'\")}')">🗑️</button>
-                  <button type="button" style="background:#fff;border:1px solid #f3f8ff;padding:.25rem .5rem;border-radius:6px;color:var(--brand);margin-left:.4rem" onclick="generateQRCode('${q.replace(/'/g,\"\\\\'\")}','${n.replace(/'/g,\"\\\\'\")}')">📥 QR</button>
-                </div>
-              </td>`;
-            tbody.appendChild(row);
-          });
-          return;
-        }
-        tbody.innerHTML = '<tr><td colspan="6">No records found.</td></tr>';
-      } catch(err){
-        console.error(err);
-        tbody.innerHTML = '<tr><td colspan="6">Error loading records.</td></tr>';
-      }
+  // ---------------- Backend helpers ----------------
+  async function backendList(){
+    try{
+      const res = await timeoutFetch(BACKEND_LIST_ADD, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' })
+      }, 9000);
+      if(!res.ok) throw new Error('Bad response from backend');
+      const data = await res.json();
+      if(!data || !Array.isArray(data.records)) throw new Error('Unexpected backend format');
+      usingMock = false;
+      setApiNotice('Connected to backend — using live data.');
+      setApiError('');
+      connStatus.textContent = 'Connected (live)';
+      return data.records;
+    }catch(err){
+      usingMock = true;
+      setApiNotice('Using local fallback data (backend unavailable).');
+      setApiError('Fetch failed — possible CORS or network issue. Check Apps Script deployment and CORS.');
+      connStatus.textContent = 'Using fallback (offline)';
+      return mockRecords.slice();
     }
+  }
 
-    document.getElementById('refreshListBtn').addEventListener('click', fetchCertificates);
-    document.getElementById('hideAdmin').addEventListener('click', ()=> { document.getElementById('admin-panel').style.display = 'none'; });
+  async function backendAdd(record){
+    try{
+      const res = await timeoutFetch(BACKEND_LIST_ADD, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(Object.assign({ action: 'add' }, record))
+      }, 9000);
+      if(!res.ok) throw new Error('Bad response');
+      const data = await res.json();
+      if(data && data.success) return { ok:true };
+      throw new Error(data && data.error ? data.error : 'Add failed');
+    }catch(err){
+      mockRecords.push(record);
+      usingMock = true;
+      setApiNotice('Using local fallback data (backend unavailable).');
+      setApiError('Add failed to backend — record saved locally for testing.');
+      connStatus.textContent = 'Using fallback (offline)';
+      return { ok:false, local:true };
+    }
+  }
 
-    // ADMIN: add
-    document.getElementById('addCertForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const payload = { action: 'add' };
-      fd.forEach((v,k) => payload[k] = String(v||'').trim());
-      try {
-        const res = await fetch(BACKEND_LIST_ADD, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if(data && data.success){
-          alert('Certificate added');
-          generateQRCode(payload.QualificationNumber, payload.Name);
-          e.target.reset();
-          fetchCertificates();
+  async function backendDelete(record){
+    try{
+      const res = await timeoutFetch(BACKEND_DELETE, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(Object.assign({ action: 'delete' }, record))
+      }, 9000);
+      if(!res.ok) throw new Error('Bad response');
+      const data = await res.json();
+      if(data && data.success) return { ok:true };
+      throw new Error(data && data.error ? data.error : 'Delete failed');
+    }catch(err){
+      const idx = mockRecords.findIndex(r => r.QualificationNumber === record.QualificationNumber && r.Name === record.Name);
+      if(idx > -1) mockRecords.splice(idx, 1);
+      usingMock = true;
+      setApiNotice('Using local fallback data (backend unavailable).');
+      setApiError('Delete failed to backend — record removed locally for testing.');
+      connStatus.textContent = 'Using fallback (offline)';
+      return { ok:false, local:true };
+    }
+  }
+
+  // --------------- Verification UI ---------------
+  function renderVerified(rec){
+    const vId = makeVerificationId(rec);
+    (async()=>{
+      const fingerprint = await fingerprintHex(`${rec.QualificationNumber}||${rec.Name}||${rec.Year}||${rec.AwardedBy}`);
+      statusEl.innerHTML = `<div class="verified">✅ <strong>VERIFIED</strong><br>
+        <b>Name:</b> ${escapeHtml(rec.Name)}<br>
+        <b>Qualification:</b> ${escapeHtml(rec.QualificationNumber)}<br>
+        <b>Level:</b> ${escapeHtml(rec.Level||'')}<br>
+        <b>Awarded By:</b> ${escapeHtml(rec.AwardedBy||'')}<br>
+        <b>Year:</b> ${escapeHtml(rec.Year||'')}<br>
+        <div style="margin-top:.5rem" class="meta">Verification ID: <code style="background:#f3f8ff;padding:.25rem .5rem;border-radius:6px">${escapeHtml(vId)}</code></div>
+        <div class="meta" style="margin-top:.25rem">Fingerprint: <code style="background:#f3f8ff;padding:.25rem .5rem;border-radius:6px">${fingerprint}</code></div>
+      </div>`;
+      // summary panel
+      summaryTitle.textContent = `${rec.Name}`;
+      summarySub.textContent = `${rec.QualificationNumber} · ${rec.Level || ''}`;
+      summaryBody.innerHTML = `<div class="meta"><strong>Awarded by:</strong> ${escapeHtml(rec.AwardedBy || '')}</div>
+        <div class="meta"><strong>Year:</strong> ${escapeHtml(rec.Year || '')}</div>
+        <div style="margin-top:8px" class="meta"><strong>Verification ID:</strong> ${escapeHtml(vId)}</div>`;
+      printBtn.style.display = 'inline-block';
+      downloadLabel.style.display = 'inline-block';
+      lastVerifiedEl.textContent = (new Date()).toLocaleString();
+      // attach printable content data attributes for printing / label generating
+      printBtn.dataset.rec = JSON.stringify(rec);
+      downloadLabel.dataset.rec = JSON.stringify(rec);
+    })();
+  }
+  function renderNotFound(){ 
+    statusEl.innerHTML = `<div class="notfound">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or not registered.</div>`;
+    summaryTitle.textContent = 'Not found';
+    summarySub.textContent = 'Try scanning again or enter details manually';
+    summaryBody.textContent = '';
+    printBtn.style.display = 'none';
+    downloadLabel.style.display = 'none';
+  }
+
+  function makeVerificationId(rec){
+    // short human-friendly ID: QUAL + last 6 chars of a hash
+    const base = `${rec.QualificationNumber}::${rec.Name}`;
+    return `${rec.QualificationNumber.replace(/\s+/g,'')}-${hashPreview(base,6)}`;
+  }
+
+  // produce a short preview from a hash using built-in btoa of sha-like value fallback
+  function hashPreview(s, len=6){
+    // simple stable preview using window.crypto where available
+    if(window.crypto && crypto.subtle){
+      // asynchronous case handled by wrapper if needed — but for quick preview fallback we'll create deterministic base64
+      let b = '';
+      for(let i=0;i<s.length;i++){ b += s.charCodeAt(i).toString(16); }
+      // take last chars
+      return b.slice(-len).toUpperCase() || '000000';
+    }
+    return btoa(s).replace(/[^A-Z0-9]/ig,'').slice(0,len).toUpperCase();
+  }
+
+  async function fingerprintHex(text){
+    if(!(window.crypto && crypto.subtle)) return 'n/a';
+    const enc = new TextEncoder();
+    const data = enc.encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    const arr = Array.from(new Uint8Array(hash)).slice(0,8); // shorten to 8 bytes for display
+    return arr.map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  // verify form handling
+  document.getElementById('verifyForm').addEventListener('submit', async (ev)=>{ ev.preventDefault(); await verifyQualification(); });
+  document.getElementById('clearBtn').addEventListener('click', ()=>{ document.getElementById('qualificationNumber').value=''; document.getElementById('name').value=''; statusEl.innerHTML=''; summaryTitle.textContent='No certificate selected'; summarySub.textContent='Awaiting scan or manual entry.'; summaryBody.textContent=''; printBtn.style.display='none'; downloadLabel.style.display='none'; });
+  document.getElementById('copyLink').addEventListener('click', ()=>{ const q = document.getElementById('qualificationNumber').value.trim(); if(!q) return alert('Enter a qualification number to copy link'); const url = `${location.origin}${location.pathname}?cert=${encodeURIComponent(q)}`; navigator.clipboard?.writeText(url).then(()=>alert('Link copied')).catch(()=>prompt('Copy this link', url)); });
+
+  async function verifyQualification(){
+    const qual = document.getElementById('qualificationNumber').value.trim();
+    const name = document.getElementById('name').value.trim();
+    if(!qual || !name) return alert('Qualification number and name are required.');
+    loadingEl.style.display = 'block';
+    statusEl.innerHTML = '';
+    const records = await backendList();
+    loadingEl.style.display = 'none';
+    const found = records.find(r => textEqual(r.QualificationNumber, qual) && textEqual(r.Name, name));
+    if(found) renderVerified(found); else renderNotFound();
+  }
+
+  // If page loaded with ?cert=ID, auto-verify
+  function getQueryParam(name){
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+  async function autoVerifyFromQuery(){
+    const certId = getQueryParam('cert') || getQueryParam('q') || getQueryParam('id');
+    if(!certId) return;
+    loadingEl.style.display = 'block';
+    const records = await backendList();
+    loadingEl.style.display = 'none';
+    const found = records.find(r => textEqual(r.QualificationNumber, certId));
+    if(found){
+      document.getElementById('qualificationNumber').value = found.QualificationNumber;
+      document.getElementById('name').value = found.Name;
+      renderVerified(found);
+      return;
+    }
+    renderNotFound();
+  }
+
+  // ----------------- Scanner -----------------
+  let scanner = null;
+  async function startScanner(){
+    startBtn.disabled = true;
+    stopBtn.style.display = 'inline-block';
+    readerEl.style.display = 'block';
+    setApiError('');
+    if(!window.Html5Qrcode) { setApiError('QR library not loaded'); startBtn.disabled=false; return; }
+    if(scanner) return;
+    scanner = new Html5Qrcode('reader', { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE, Html5QrcodeSupportedFormats.CODE_128, Html5QrcodeSupportedFormats.CODE_39 ] });
+    try{
+      await scanner.start({ facingMode:'environment' }, { fps: 10, qrbox: 260 }, onScanSuccess, (error)=>{ /* scan failure per frame — ignore */ } );
+    }catch(err){
+      setApiError('Unable to access camera: ' + (err && err.message || err));
+      stopScanner();
+    }
+  }
+
+  async function onScanSuccess(decodedText){
+    try{
+      const t = String(decodedText).trim();
+      // if it's a URL, navigate/canonicalize
+      if( t.startsWith('http://') || t.startsWith('https://') ){
+        // If it points to this site or another, open it (user expects that)
+        // If it points to this page with a cert param, follow it to trigger canonical behavior
+        window.location.href = t;
+        return;
+      }
+    }catch(e){ /* ignore */ }
+
+    // Accept several payload styles:
+    // 1) JSON {"QualificationNumber":"...","Name":"..."}  (case-insensitive)
+    // 2) Pipe-delimited: QUAL|NAME
+    // 3) Plain QUAL (barcode scanners sometimes emit only the code)
+    let qual = '', fullName = '';
+    try{
+      const payload = String(decodedText).trim();
+      if(payload.startsWith('{')){
+        const obj = JSON.parse(payload);
+        qual = obj.qualificationNumber || obj.QualificationNumber || obj.Q || obj.q || '';
+        fullName = obj.name || obj.Name || obj.N || obj.n || '';
+      } else {
+        const parts = payload.split('|');
+        if(parts.length >= 2){
+          qual = parts[0] || '';
+          fullName = parts.slice(1).join('|') || '';
         } else {
-          alert('Add failed: ' + (data && data.error || 'unknown'));
+          // single token — treat as qualification number
+          qual = payload;
         }
-      } catch(err){
-        console.error(err);
-        alert('Error adding certificate');
       }
-    });
-
-    // ADMIN: delete
-    async function deleteCertificate(q, n){
-      if(!confirm(`Delete ${n} (${q})?`)) return;
-      try {
-        const res = await fetch(BACKEND_DELETE, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ action: 'delete', QualificationNumber: q, Name: n })
-        });
-        const data = await res.json();
-        if(data && data.success){ alert('Deleted'); fetchCertificates(); }
-        else alert('Delete failed: ' + (data && data.error || 'unknown'));
-      } catch(err){
-        console.error(err);
-        alert('Error deleting certificate');
-      }
+    }catch(e){
+      const parts = String(decodedText).split('|');
+      qual = parts[0] || '';
+      fullName = parts.slice(1).join('|') || '';
     }
 
-    // QR generation + download
-    function generateQRCode(id, name){
-      const text = `${id}|${name}`;
-      const container = document.getElementById('qrCodeContainer');
-      container.innerHTML = '';
-      QRCode.toDataURL(text, { width: 300, margin: 2 }).then(url => {
-        container.innerHTML = `<div class="flex"><div class="qr-preview"><img src="${url}" alt="QR"/></div>
-          <div style="margin-left:12px"><a class="primary-download" href="${url}" download="certificate_qr_${encodeURIComponent(id)}.png">Download PNG</a></div></div>`;
-      }).catch(err => {
-        console.error(err);
-        container.textContent = 'Error generating QR code';
+    if(qual && fullName){
+      document.getElementById('qualificationNumber').value = qual;
+      document.getElementById('name').value = fullName;
+      await verifyQualification();
+      stopScanner();
+    } else if(qual){
+      document.getElementById('qualificationNumber').value = qual;
+      document.getElementById('name').value = '';
+      // attempt lookup by certificate id only
+      loadingEl.style.display = 'block';
+      const records = await backendList();
+      loadingEl.style.display = 'none';
+      const found = records.find(r => textEqual(r.QualificationNumber, qual));
+      if(found){
+        document.getElementById('name').value = found.Name;
+        renderVerified(found);
+      } else {
+        renderNotFound();
+      }
+      stopScanner();
+    } else {
+      setApiError('QR content not understood.');
+    }
+  }
+
+  function stopScanner(){
+    if(!scanner){
+      readerEl.style.display = 'none';
+      stopBtn.style.display = 'none';
+      startBtn.disabled = false;
+      return;
+    }
+    scanner.stop().then(()=>{ scanner.clear(); scanner = null; readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false; }).catch(()=>{ scanner=null; readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false; });
+  }
+
+  stopBtn.addEventListener('click', stopScanner);
+  startBtn.addEventListener('click', startScanner);
+
+  // ----------------- Admin Panel -----------------
+  // Toggle with Ctrl+Shift+A (or seed admin token)
+  document.addEventListener('keydown', async (e)=>{
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){
+      e.preventDefault();
+      const panel = document.getElementById('admin-panel');
+      if(panel.style.display === 'block'){ panel.style.display = 'none'; panel.setAttribute('aria-hidden','true'); return; }
+      // Keep the simple prompt but persist login in sessionStorage
+      const logged = sessionStorage.getItem('admin_logged') === '1';
+      if(logged){
+        panel.style.display = 'block'; panel.setAttribute('aria-hidden','false'); await fetchCertificates(); return;
+      }
+      const pass = prompt('Enter admin password:');
+      if(pass === ADMIN_PASSWORD){
+        sessionStorage.setItem('admin_logged','1');
+        panel.style.display = 'block';
+        panel.setAttribute('aria-hidden','false');
+        await fetchCertificates();
+      } else {
+        alert('Incorrect password');
+      }
+    }
+  });
+
+  document.getElementById('logoutAdmin').addEventListener('click', ()=>{
+    sessionStorage.removeItem('admin_logged');
+    document.getElementById('admin-panel').style.display='none';
+    alert('Logged out');
+  });
+
+  async function fetchCertificates(){
+    const tbody = document.querySelector('#certTable tbody');
+    tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+    try{
+      const records = await backendList();
+      tbody.innerHTML = '';
+      records.forEach(r=>{
+        const tr = document.createElement('tr');
+        const q = escapeHtml(r.QualificationNumber||'');
+        const n = escapeHtml(r.Name||'');
+        const l = escapeHtml(r.Level||'');
+        const a = escapeHtml(r.AwardedBy||'');
+        const y = escapeHtml(r.Year||'');
+        tr.innerHTML = `<td>${q}</td><td>${n}</td><td>${l}</td><td>${a}</td><td>${y}</td><td></td>`;
+        const actionsCell = tr.querySelector('td:last-child');
+        const delBtn = document.createElement('button'); delBtn.textContent='🗑️'; delBtn.className='ghost';
+        delBtn.addEventListener('click', ()=>deleteCertificate(r.QualificationNumber, r.Name));
+        const qrBtn = document.createElement('button'); qrBtn.textContent='📥 QR'; qrBtn.className='ghost'; qrBtn.style.marginLeft='8px';
+        qrBtn.addEventListener('click', ()=>generateQRCodeForPrinting(r.QualificationNumber, r.Name, false));
+        const payloadBtn = document.createElement('button'); payloadBtn.textContent='📦 Payload QR'; payloadBtn.className='ghost'; payloadBtn.style.marginLeft='8px';
+        payloadBtn.addEventListener('click', ()=>generateQRCodeForPrinting(r.QualificationNumber, r.Name, true, r));
+        actionsCell.appendChild(delBtn); actionsCell.appendChild(qrBtn); actionsCell.appendChild(payloadBtn);
+        tbody.appendChild(tr);
+      });
+    }catch(err){
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="6">Error loading records.</td></tr>';
+    }
+  }
+
+  document.getElementById('refreshListBtn').addEventListener('click', fetchCertificates);
+  document.getElementById('hideAdmin').addEventListener('click', ()=>{ document.getElementById('admin-panel').style.display='none'; document.getElementById('admin-panel').setAttribute('aria-hidden','true'); });
+
+  document.getElementById('addCertForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const rec = {};
+    fd.forEach((v,k) => rec[k] = String(v||'').trim());
+    if(!rec.QualificationNumber || !rec.Name){ alert('Qualification Number and Name required'); return; }
+    // push to backend or fallback
+    const added = await backendAdd(rec);
+    if(added && added.ok){ alert('Certificate added to backend'); e.target.reset(); fetchCertificates(); }
+    else { alert('Added locally (backend unavailable)'); e.target.reset(); fetchCertificates(); }
+    // generate QR by default (URL)
+    const encodeFull = document.getElementById('encodeFullPayload').checked;
+    generateQRCodeForPrinting(rec.QualificationNumber, rec.Name, encodeFull, rec);
+  });
+
+  async function deleteCertificate(q,n){
+    if(!confirm(`Delete ${n} (${q})?`)) return;
+    const res = await backendDelete({ QualificationNumber: q, Name: n });
+    if(res && res.ok){ alert('Deleted'); } else { alert('Removed locally (backend unavailable)'); }
+    fetchCertificates();
+  }
+
+  // Generate QR for printing / downloading
+  // id, name, encodeFullPayload boolean, optional fullRecord to include payload
+  function generateQRCodeForPrinting(id, name, encodeFull=false, fullRecord=null){
+    const base = `${location.origin}${location.pathname}`;
+    const url = `${base}?cert=${encodeURIComponent(id)}`;
+    const container = document.getElementById('qrCodeContainer');
+    container.innerHTML = '<div class="muted">Generating QR...</div>';
+    let payload = url;
+    if(encodeFull && fullRecord){
+      // include full JSON payload (useful for offline scanning)
+      payload = JSON.stringify({
+        QualificationNumber: fullRecord.QualificationNumber || id,
+        Name: fullRecord.Name || name,
+        Level: fullRecord.Level || '',
+        AwardedBy: fullRecord.AwardedBy || '',
+        Year: fullRecord.Year || ''
       });
     }
+    QRCode.toDataURL(payload, { width: 400, margin: 2 }).then(imgUrl => {
+      const vPrintable = encodeFull ? 'Full payload encoded' : 'URL encoded';
+      container.innerHTML = `<div class="flex" style="align-items:center">
+        <div class="qr-preview"><img src="${imgUrl}" alt="QR for ${escapeHtml(id)}"/></div>
+        <div style="margin-left:14px">
+          <div><strong>${vPrintable} in QR</strong></div>
+          <div class="small" style="margin-bottom:8px"><code style="background:#f3f8ff;padding:6px;border-radius:6px;display:inline-block;max-width:220px;overflow:auto">${escapeHtml(payload)}</code></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <a class="primary" href="${imgUrl}" download="certificate_qr_${encodeURIComponent(id)}.png" style="text-decoration:none;padding:.45rem .7rem">Download PNG</a>
+            <button id="downloadLabelBtn" class="ghost">Download Printable Label</button>
+          </div>
+        </div>
+      </div>`;
+      document.getElementById('downloadLabelBtn').addEventListener('click', ()=>downloadPrintableLabel(imgUrl, id, name));
+    }).catch(err => {
+      container.textContent = 'Error generating QR';
+      console.error(err);
+    });
+  }
+
+  // create a simple printable label (opens in new window)
+  function downloadPrintableLabel(imgUrl, id, name){
+    const win = window.open('', '_blank');
+    const html = `
+      <html><head><title>QR label</title>
+      <style>
+        body{font-family:Inter,Arial; padding:20px}
+        .label{width:320px;padding:12px;border:1px solid #e6eef8;border-radius:8px;display:flex;gap:12px;align-items:center}
+        .label img{width:120px;height:120px}
+        .meta{font-size:14px;color:#012f6b}
+        .small{font-size:12px;color:#556}
+      </style>
+      </head><body>
+      <div class="label">
+        <img src="${imgUrl}" alt="QR" />
+        <div>
+          <div class="meta"><strong>${escapeHtml(name)}</strong></div>
+          <div class="small">${escapeHtml(id)}</div>
+          <div style="margin-top:6px" class="small">Scan to verify authenticity</div>
+        </div>
+      </div>
+      <script>window.print();</script>
+      </body></html>
+    `;
+    win.document.write(html);
+    win.document.close();
+  }
+
+  // print certificate (simple printable page)
+  printBtn.addEventListener('click', ()=>{
+    const rec = JSON.parse(printBtn.dataset.rec || '{}');
+    const imgUrlPromise = QRCode.toDataURL(`${location.origin}${location.pathname}?cert=${encodeURIComponent(rec.QualificationNumber)}`, { width: 300, margin:2 });
+    imgUrlPromise.then(imgUrl=>{
+      const win = window.open('', '_blank');
+      const html = `
+        <html><head><title>Certificate Verification - Print</title>
+        <style>body{font-family:Inter,Arial;padding:24px;color:#012f6b} .card{max-width:800px;margin:0 auto;border:1px solid #e6eef8;padding:28px;border-radius:10px} .title{font-size:20px;color:var(--brand)} .cert{margin-top:18px;border-top:1px dashed #e6eef8;padding-top:14px;display:flex;gap:18px;align-items:center} .qr{width:200px} .meta{font-size:15px}</style>
+        </head><body>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><h2 style="margin:0">Newcastle College Ltd</h2><div style="color:#556">Certificate Verification</div></div>
+            <div style="text-align:right"><strong>VERIFIED</strong><div style="color:#556;font-size:12px">Official check</div></div>
+          </div>
+          <div class="cert">
+            <div style="flex:1">
+              <div class="meta"><strong>Name:</strong> ${escapeHtml(rec.Name)}</div>
+              <div class="meta"><strong>Qualification:</strong> ${escapeHtml(rec.QualificationNumber)}</div>
+              <div class="meta"><strong>Level:</strong> ${escapeHtml(rec.Level||'')}</div>
+              <div class="meta"><strong>Awarded By:</strong> ${escapeHtml(rec.AwardedBy||'')}</div>
+              <div style="margin-top:12px" class="meta"><strong>Verification ID:</strong> ${escapeHtml(makeVerificationId(rec))}</div>
+            </div>
+            <div class="qr"><img src="${imgUrl}" alt="QR" /></div>
+          </div>
+        </div>
+        <script>setTimeout(()=>window.print(),200);</script>
+        </body></html>
+      `;
+      win.document.write(html);
+      win.document.close();
+    }).catch(()=>alert('Unable to generate QR for print'));
+  });
+
+  // ---------------- Self-test & CSV export ----------------
+  document.getElementById('selfTest').addEventListener('click', async ()=>{
+    apiNotice.style.display='none';
+    apiError.style.display='none';
+    const results = [];
+    const tests = [
+      { q: 'NC-2025-001234', n: 'Jane Doe' },
+      { q: 'NC-2025-005678', n: 'John Smith' },
+      { q: 'NOT-EXIST', n: 'Nobody' }
+    ];
+    for(const t of tests){
+      const records = await backendList();
+      const found = records.find(r => textEqual(r.QualificationNumber, t.q) && textEqual(r.Name, t.n));
+      results.push({ test: t, ok: !!found });
+    }
+    statusEl.innerHTML = '<strong>Self-test results:</strong><br>' + results.map(r=>`${r.test.q} / ${r.test.n} => ${r.ok ? 'FOUND' : 'NOT FOUND'}`).join('<br>');
+  });
+
+  exportCSV.addEventListener('click', async ()=>{
+    const rows = await backendList();
+    const csv = ['QualificationNumber,Name,Level,AwardedBy,Year'].concat(rows.map(r => `"${(r.QualificationNumber||'').replace(/"/g,'""')}","${(r.Name||'').replace(/"/g,'""')}","${(r.Level||'').replace(/"/g,'""')}","${(r.AwardedBy||'').replace(/"/g,'""')}","${(r.Year||'').replace(/"/g,'""')}"`)).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'certificates.csv';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  // ---------------- Auto-run on load ----------------
+  (async ()=>{
+    await backendList(); // prime connection / set notices
+    await autoVerifyFromQuery();
+  })();
+
+  // --------------- Utilities ----------------
+  // fingerprint helper is defined earlier
+  // hashPreview defined earlier
+
+  // small safety: prompt on unload if admin logged in
+  window.addEventListener('beforeunload', (e)=>{
+    if(sessionStorage.getItem('admin_logged')==='1'){
+      e.preventDefault();
+      e.returnValue = 'Admin session active — close anyway?';
+    }
+  });
   </script>
 </body>
 </html>
